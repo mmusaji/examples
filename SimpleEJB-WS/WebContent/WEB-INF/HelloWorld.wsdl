@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://webservices.samples.jboss.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="HelloWorldService" targetNamespace="http://webservices.samples.jboss.org/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://webservices.samples.jboss.org/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://webservices.samples.jboss.org/">
+<xs:element name="multipleArgs" type="tns:multipleArgs"/>
+<xs:element name="multipleArgsResponse" type="tns:multipleArgsResponse"/>
+<xs:element name="sayGoodBye" type="tns:sayGoodBye"/>
+<xs:element name="sayGoodByeResponse" type="tns:sayGoodByeResponse"/>
+<xs:complexType name="sayGoodBye">
+<xs:sequence>
+<xs:element minOccurs="0" name="arg0" type="xs:string"/>
+<xs:element minOccurs="0" name="arg1" type="tns:someRestrictedObject"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="someRestrictedObject">
+<xs:sequence>
+<xs:element name="someNumber">
+       <xs:simpleType>
+       <xs:restriction base="xs:integer">
+         <xs:minInclusive value="0"/>
+         <xs:maxInclusive value="9"/>
+       </xs:restriction>
+       </xs:simpleType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="sayGoodByeResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="multipleArgs">
+<xs:sequence>
+<xs:element minOccurs="0" name="one" type="xs:string"/>
+<xs:element minOccurs="0" name="two" type="xs:string"/>
+<xs:element minOccurs="0" name="three" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="multipleArgsResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="BasicException" type="tns:BasicException"/>
+<xs:complexType name="BasicException">
+<xs:sequence>
+<xs:element name="message" nillable="true" type="xs:string"/>
+<xs:element name="code" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="BasicException">
+    <wsdl:part element="tns:BasicException" name="BasicException">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="sayGoodByeResponse">
+    <wsdl:part element="tns:sayGoodByeResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="multipleArgs">
+    <wsdl:part element="tns:multipleArgs" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="multipleArgsResponse">
+    <wsdl:part element="tns:multipleArgsResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="sayGoodBye">
+    <wsdl:part element="tns:sayGoodBye" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="HelloWorld">
+    <wsdl:operation name="sayGoodBye">
+      <wsdl:input message="tns:sayGoodBye" name="sayGoodBye">
+    </wsdl:input>
+      <wsdl:output message="tns:sayGoodByeResponse" name="sayGoodByeResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:BasicException" name="BasicException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="multipleArgs">
+      <wsdl:input message="tns:multipleArgs" name="multipleArgs">
+    </wsdl:input>
+      <wsdl:output message="tns:multipleArgsResponse" name="multipleArgsResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="HelloWorldServiceSoapBinding" type="tns:HelloWorld">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="multipleArgs">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="multipleArgs">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="multipleArgsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sayGoodBye">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="sayGoodBye">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="sayGoodByeResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="BasicException">
+        <soap:fault name="BasicException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="HelloWorldService">
+    <wsdl:port binding="tns:HelloWorldServiceSoapBinding" name="HelloWorldPort">
+      <soap:address location="http://localhost:8080/SimpleEJB-WS/HelloWorld"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
